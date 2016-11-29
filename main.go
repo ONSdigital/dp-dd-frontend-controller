@@ -19,6 +19,10 @@ func main() {
 		config.BindAddr = v
 	}
 
+	if v := os.Getenv("RENDERER_URL"); len(v) > 0 {
+		config.RendererURL = v
+	}
+
 	log.Namespace = "dp-dd-frontend-controller"
 
 	router := pat.New()
@@ -28,7 +32,7 @@ func main() {
 		requestID.Handler(16),
 	).Then(router)
 
-	router.Get("/hello", hello.Handler)
+	router.Get("/dd/hello", hello.Handler)
 
 	log.Debug("Starting server", log.Data{
 		"bind_addr":    config.BindAddr,

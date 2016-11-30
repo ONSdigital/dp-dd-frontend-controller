@@ -8,9 +8,10 @@ import (
 	"encoding/json"
 	"github.com/ONSdigital/go-ns/log"
 	"bytes"
+	"io"
 )
 
-// Call front-end renderer to render the given model with the given template
+// Render calls the configured front-end renderer service to render the given model with the given template.
 func Render(model interface{}, template string) (renderedView []byte, err error) {
 	body, err := json.Marshal(model)
 	if err != nil {
@@ -30,7 +31,7 @@ func Render(model interface{}, template string) (renderedView []byte, err error)
 		return
 	}
 
-	defer res.Body.Close()
+	defer checkClose(res.Body)
 
 	if res.StatusCode != http.StatusOK {
 		err = fmt.Errorf("Handler.handler: unexpected status code: %d", res.StatusCode)
@@ -40,4 +41,10 @@ func Render(model interface{}, template string) (renderedView []byte, err error)
 	renderedView, err = ioutil.ReadAll(res.Body)
 
 	return
+}
+
+func checkClose(c io.Closer) {
+	if err := c.Close(); err != nil {
+		log.Error(err, nil)
+	}
 }

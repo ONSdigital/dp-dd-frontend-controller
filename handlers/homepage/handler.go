@@ -7,7 +7,7 @@ import (
 	"github.com/ONSdigital/dp-frontend-models/model/dd/homepage"
 )
 
-// Handles requests to the homepage
+// Handler handles requests to the homepage
 func Handler(w http.ResponseWriter, req *http.Request) {
 	page := homepage.Homepage{}
 
@@ -23,5 +23,7 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 
 func respond(w http.ResponseWriter, status int, body []byte) {
 	w.WriteHeader(status)
-	w.Write(body)
+	if _, err := w.Write(body); err != nil {
+		log.Error(err, nil)
+	}
 }

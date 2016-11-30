@@ -2,14 +2,14 @@ package homepage
 
 import (
 	"net/http"
-	"github.com/ONSdigital/dp-frontend-models/model"
 	"github.com/ONSdigital/dp-dd-frontend-controller/renderer"
 	"github.com/ONSdigital/go-ns/log"
+	"github.com/ONSdigital/dp-frontend-models/model/dd/homepage"
 )
 
 // Handles requests to the homepage
 func Handler(w http.ResponseWriter, req *http.Request) {
-	page := model.Page{}
+	page := homepage.Homepage{}
 
 	body, err := renderer.Render(page, "dd/homepage")
 	if err != nil {

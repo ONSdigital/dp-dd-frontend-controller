@@ -11,7 +11,6 @@ import (
 	"github.com/gorilla/pat"
 	"github.com/justinas/alice"
 	"github.com/ONSdigital/dp-dd-frontend-controller/config"
-	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/hello"
 	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/homepage"
 )
 
@@ -33,7 +32,6 @@ func main() {
 		requestID.Handler(16),
 	).Then(router)
 
-	router.Get("/dd/hello", hello.Handler)
 	router.Get("/dd/homepage", homepage.Handler)
 
 	log.Debug("Starting server", log.Data{

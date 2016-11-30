@@ -15,12 +15,6 @@
 			"revisionTime": "2016-11-30T10:41:09Z"
 		},
 		{
-			"checksumSHA1": "kueReEiMiAVS3oN8dm55OZOE5CE=",
-			"path": "github.com/ONSdigital/dp-frontend-models/model/hello",
-			"revision": "56662b855ea3d4befc77ae9a71b2afe8e7ea29ff",
-			"revisionTime": "2016-11-24T15:03:20Z"
-		},
-		{
 			"checksumSHA1": "41syjEeyv9W/6j89XArd1yyWNBU=",
 			"path": "github.com/gorilla/pat",
 			"revision": "cf955c3d1f2c27ee96f93e9738085c762ff5f49d",

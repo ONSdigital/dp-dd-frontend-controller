@@ -1,16 +1,17 @@
 package renderer
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"github.com/ONSdigital/dp-dd-frontend-controller/config"
+	"github.com/ONSdigital/go-ns/log"
+	"io"
 	"io/ioutil"
 	"net/http"
-	"github.com/ONSdigital/dp-dd-frontend-controller/config"
-	"encoding/json"
-	"github.com/ONSdigital/go-ns/log"
-	"bytes"
 )
 
-// Call front-end renderer to render the given model with the given template
+// Render calls the configured front-end renderer service to render the given model with the given template.
 func Render(model interface{}, template string) (renderedView []byte, err error) {
 	body, err := json.Marshal(model)
 	if err != nil {
@@ -18,7 +19,7 @@ func Render(model interface{}, template string) (renderedView []byte, err error)
 		return
 	}
 
-	request, err := http.NewRequest("POST", config.RendererURL + "/" + template, bytes.NewReader(body))
+	request, err := http.NewRequest("POST", config.RendererURL+"/"+template, bytes.NewReader(body))
 	if err != nil {
 		log.Error(err, nil)
 		return
@@ -30,14 +31,20 @@ func Render(model interface{}, template string) (renderedView []byte, err error)
 		return
 	}
 
-	defer res.Body.Close()
+	defer checkClose(res.Body)
 
 	if res.StatusCode != http.StatusOK {
-		err = fmt.Errorf("Handler.handler: unexpected status code: %d", res.StatusCode)
+		err = fmt.Errorf("renderer.Render: unexpected status code from front-end renderer: %d (template: %s)", res.StatusCode, template)
 		return
 	}
 
 	renderedView, err = ioutil.ReadAll(res.Body)
 
 	return
+}
+
+func checkClose(c io.Closer) {
+	if err := c.Close(); err != nil {
+		log.Error(err, nil)
+	}
 }

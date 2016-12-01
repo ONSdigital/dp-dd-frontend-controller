@@ -32,7 +32,8 @@ func main() {
 		requestID.Handler(16),
 	).Then(router)
 
-	router.Get("/dd/homepage", homepage.Handler)
+	router.HandleFunc("/dd", homepage.Handler)
+	router.HandleFunc("/dd/", homepage.Handler)
 
 	log.Debug("Starting server", log.Data{
 		"bind_addr":    config.BindAddr,

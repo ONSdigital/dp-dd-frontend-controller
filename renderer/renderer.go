@@ -34,7 +34,7 @@ func Render(model interface{}, template string) (renderedView []byte, err error)
 	defer checkClose(res.Body)
 
 	if res.StatusCode != http.StatusOK {
-		err = fmt.Errorf("Handler.handler: unexpected status code: %d", res.StatusCode)
+		err = fmt.Errorf("renderer.Render: unexpected status code from front-end renderer: %d (template: %s)", res.StatusCode, template)
 		return
 	}
 

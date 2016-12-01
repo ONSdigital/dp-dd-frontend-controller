@@ -1,10 +1,10 @@
 package homepage
 
 import (
-	"net/http"
 	"github.com/ONSdigital/dp-dd-frontend-controller/renderer"
-	"github.com/ONSdigital/go-ns/log"
 	"github.com/ONSdigital/dp-frontend-models/model/dd/homepage"
+	"github.com/ONSdigital/go-ns/log"
+	"net/http"
 )
 
 // Handler handles requests to the homepage

@@ -5,13 +5,13 @@ import (
 	"os"
 	"time"
 
+	"github.com/ONSdigital/dp-dd-frontend-controller/config"
+	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/homepage"
 	"github.com/ONSdigital/go-ns/handlers/requestID"
 	"github.com/ONSdigital/go-ns/handlers/timeout"
 	"github.com/ONSdigital/go-ns/log"
 	"github.com/gorilla/pat"
 	"github.com/justinas/alice"
-	"github.com/ONSdigital/dp-dd-frontend-controller/config"
-	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/hello"
 )
 
 func main() {
@@ -32,10 +32,11 @@ func main() {
 		requestID.Handler(16),
 	).Then(router)
 
-	router.Get("/dd/hello", hello.Handler)
+	router.HandleFunc("/dd", homepage.Handler)
+	router.HandleFunc("/dd/", homepage.Handler)
 
 	log.Debug("Starting server", log.Data{
-		"bind_addr":    config.BindAddr,
+		"bind_addr": config.BindAddr,
 	})
 
 	server := &http.Server{

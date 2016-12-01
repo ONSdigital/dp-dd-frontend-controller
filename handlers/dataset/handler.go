@@ -1,10 +1,10 @@
-package homepage
+package dataset
 
 import (
 	"github.com/ONSdigital/dp-dd-frontend-controller/config"
 	"github.com/ONSdigital/dp-dd-frontend-controller/discovery"
 	"github.com/ONSdigital/dp-dd-frontend-controller/renderer"
-	"github.com/ONSdigital/dp-frontend-models/model/dd/homepage"
+	"github.com/ONSdigital/dp-frontend-models/model/dd/dataset"
 	"github.com/ONSdigital/go-ns/log"
 	"net/http"
 )
@@ -12,8 +12,10 @@ import (
 // Handler handles requests to the homepage
 func Handler(w http.ResponseWriter, req *http.Request) {
 
-	// Call into DD API to get a list of all datasets
-	datasets, err := discovery.ListDatasets()
+	id := req.URL.Query().Get(":id")
+
+	// Call into DD API to get the dataset information
+	datasetModel, err := discovery.GetDataset(id)
 	if err != nil {
 		log.Error(err, nil)
 		respond(w, http.StatusInternalServerError, []byte(err.Error()))
@@ -21,15 +23,14 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// Rewrite the URLs in the datasets to point to our own address
-	for _, dataset := range datasets.Items {
-		dataset.URL = config.ExternalURL + "/dataset/" + dataset.ID
+	datasetModel.URL = config.ExternalURL + "/dataset/" + datasetModel.ID
+
+
+	page := dataset.Page{
+		Dataset: datasetModel,
 	}
 
-	page := homepage.Homepage{
-		Datasets: datasets,
-	}
-
-	body, err := renderer.Render(page, "dd/homepage")
+	body, err := renderer.Render(page, "dd/dataset")
 	if err != nil {
 		log.ErrorR(req, err, nil)
 		respond(w, http.StatusInternalServerError, []byte(err.Error()))
@@ -45,3 +46,4 @@ func respond(w http.ResponseWriter, status int, body []byte) {
 		log.Error(err, nil)
 	}
 }
+

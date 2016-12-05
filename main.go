@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ONSdigital/dp-dd-frontend-controller/config"
+	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/dataset"
 	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/homepage"
 	"github.com/ONSdigital/go-ns/handlers/requestID"
 	"github.com/ONSdigital/go-ns/handlers/timeout"
@@ -23,6 +24,14 @@ func main() {
 		config.RendererURL = v
 	}
 
+	if v := os.Getenv("DISCOVERY_API_URL"); len(v) > 0 {
+		config.DiscoveryAPIURL = v
+	}
+
+	if v := os.Getenv("EXTERNAL_URL"); len(v) > 0 {
+		config.ExternalURL = v
+	}
+
 	log.Namespace = "dp-dd-frontend-controller"
 
 	router := pat.New()
@@ -34,9 +43,12 @@ func main() {
 
 	router.HandleFunc("/dd", homepage.Handler)
 	router.HandleFunc("/dd/", homepage.Handler)
+	router.Get("/dd/dataset/{id}", dataset.Handler)
 
 	log.Debug("Starting server", log.Data{
-		"bind_addr": config.BindAddr,
+		"bind_addr":         config.BindAddr,
+		"renderer_url":      config.RendererURL,
+		"discovery_api_url": config.DiscoveryAPIURL,
 	})
 
 	server := &http.Server{

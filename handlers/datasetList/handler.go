@@ -1,12 +1,13 @@
-package homepage
+package datasetList
 
 import (
+	"net/http"
+
 	"github.com/ONSdigital/dp-dd-frontend-controller/config"
 	"github.com/ONSdigital/dp-dd-frontend-controller/discovery"
 	"github.com/ONSdigital/dp-dd-frontend-controller/renderer"
-	"github.com/ONSdigital/dp-frontend-models/model/dd/homepage"
+	"github.com/ONSdigital/dp-frontend-models/model/dd/datasetList"
 	"github.com/ONSdigital/go-ns/log"
-	"net/http"
 )
 
 // Handler handles requests to the homepage
@@ -25,11 +26,11 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 		dataset.URL = config.ExternalURL + "/dataset/" + dataset.ID
 	}
 
-	page := homepage.Homepage{
+	page := datasetList.DatasetList{
 		Datasets: datasets,
 	}
 
-	body, err := renderer.Render(page, "dd/homepage")
+	body, err := renderer.Render(page, "dd/datasetList")
 	if err != nil {
 		log.ErrorR(req, err, nil)
 		respond(w, http.StatusInternalServerError, []byte(err.Error()))

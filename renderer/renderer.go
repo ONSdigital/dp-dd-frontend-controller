@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/ONSdigital/dp-dd-frontend-controller/config"
-	"github.com/ONSdigital/go-ns/log"
 	"io"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/ONSdigital/dp-dd-frontend-controller/config"
+	"github.com/ONSdigital/go-ns/log"
 )
 
 // Render calls the configured front-end renderer service to render the given model with the given template.

@@ -7,7 +7,7 @@ import (
 
 	"github.com/ONSdigital/dp-dd-frontend-controller/config"
 	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/dataset"
-	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/homepage"
+	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/datasetList"
 	"github.com/ONSdigital/go-ns/handlers/requestID"
 	"github.com/ONSdigital/go-ns/handlers/timeout"
 	"github.com/ONSdigital/go-ns/log"
@@ -41,8 +41,8 @@ func main() {
 		requestID.Handler(16),
 	).Then(router)
 
-	router.HandleFunc("/dd", homepage.Handler)
-	router.HandleFunc("/dd/", homepage.Handler)
+	router.HandleFunc("/dd", datasetList.Handler)
+	router.HandleFunc("/dd/", datasetList.Handler)
 	router.Get("/dd/dataset/{id}", dataset.Handler)
 
 	log.Debug("Starting server", log.Data{

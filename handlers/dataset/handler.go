@@ -1,12 +1,13 @@
 package dataset
 
 import (
+	"net/http"
+
 	"github.com/ONSdigital/dp-dd-frontend-controller/config"
 	"github.com/ONSdigital/dp-dd-frontend-controller/discovery"
 	"github.com/ONSdigital/dp-dd-frontend-controller/renderer"
 	"github.com/ONSdigital/dp-frontend-models/model/dd/dataset"
 	"github.com/ONSdigital/go-ns/log"
-	"net/http"
 )
 
 // Handler handles requests to the homepage
@@ -21,10 +22,10 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 		respond(w, http.StatusInternalServerError, []byte(err.Error()))
 		return
 	}
+	log.DebugR(req, `Got response from API`, log.Data{"datasetModel": datasetModel})
 
 	// Rewrite the URLs in the datasets to point to our own address
 	datasetModel.URL = config.ExternalURL + "/dataset/" + datasetModel.ID
-
 
 	page := dataset.Page{
 		Dataset: datasetModel,
@@ -46,4 +47,3 @@ func respond(w http.ResponseWriter, status int, body []byte) {
 		log.Error(err, nil)
 	}
 }
-

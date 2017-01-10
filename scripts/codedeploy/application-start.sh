@@ -21,6 +21,7 @@ source $CONFIG && docker run -d              \
   --env=DISCOVERY_API_URL=$DISCOVERY_API_URL \
   --env=EXTERNAL_URL=$EXTERNAL_URL           \
   --env=RENDERER_URL=$RENDERER_URL           \
+  --env=JOB_API_URL=$JOB_API_URL             \
   --name=dp-dd-frontend-controller           \
   --net=$DOCKER_NETWORK                      \
   --restart=always                           \

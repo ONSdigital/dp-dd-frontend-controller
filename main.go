@@ -9,12 +9,12 @@ import (
 	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/dataset"
 	"github.com/ONSdigital/dp-dd-frontend-controller/handlers/datasetList"
 	"github.com/ONSdigital/go-ns/handlers/requestID"
+	"github.com/ONSdigital/go-ns/handlers/reverseProxy"
 	"github.com/ONSdigital/go-ns/handlers/timeout"
 	"github.com/ONSdigital/go-ns/log"
 	"github.com/gorilla/pat"
 	"github.com/justinas/alice"
 	"net/url"
-	"github.com/ONSdigital/go-ns/handlers/reverseProxy"
 	"strings"
 )
 
@@ -54,7 +54,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	apiProxy := reverseProxy.Create(apiURL, func(req *http.Request){
+	apiProxy := reverseProxy.Create(apiURL, func(req *http.Request) {
 		req.URL.Path = strings.TrimPrefix(req.URL.Path, `/dd/api`)
 	})
 
@@ -77,9 +77,9 @@ func main() {
 	router.Get("/dd/dataset/{id}", dataset.Handler)
 
 	log.Debug("Starting server", log.Data{
-		"bind_addr":         config.BindAddr,
-		"renderer_url":      config.RendererURL,
-		"discovery_api_url": config.DiscoveryAPIURL,
+		"bind_addr":             config.BindAddr,
+		"renderer_url":          config.RendererURL,
+		"discovery_api_url":     config.DiscoveryAPIURL,
 		"discovery_job_api_url": config.JobAPIURL,
 	})
 

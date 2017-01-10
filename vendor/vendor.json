@@ -39,6 +39,12 @@
 			"revisionTime": "2016-11-22T11:02:49Z"
 		},
 		{
+			"checksumSHA1": "at4wziPfx6E+Jla/IELKhX88nGM=",
+			"path": "github.com/ONSdigital/go-ns/handlers/reverseProxy",
+			"revision": "e474198f686c1017ac5c7bfd6de682d7288d95b8",
+			"revisionTime": "2017-01-10T09:35:41Z"
+		},
+		{
 			"checksumSHA1": "HgL/HLG5D1WNPb1lrb/hpywtm9o=",
 			"path": "github.com/ONSdigital/go-ns/handlers/timeout",
 			"revision": "2876489f003065b44a7ae6b250c238b0efe8755e",

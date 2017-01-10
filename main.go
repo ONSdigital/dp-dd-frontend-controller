@@ -13,6 +13,9 @@ import (
 	"github.com/ONSdigital/go-ns/log"
 	"github.com/gorilla/pat"
 	"github.com/justinas/alice"
+	"net/url"
+	"github.com/ONSdigital/go-ns/handlers/reverseProxy"
+	"strings"
 )
 
 func main() {
@@ -28,6 +31,10 @@ func main() {
 		config.DiscoveryAPIURL = v
 	}
 
+	if v := os.Getenv("JOB_API_URL"); len(v) > 0 {
+		config.JobAPIURL = v
+	}
+
 	if v := os.Getenv("EXTERNAL_URL"); len(v) > 0 {
 		config.ExternalURL = v
 	}
@@ -41,14 +48,39 @@ func main() {
 		requestID.Handler(16),
 	).Then(router)
 
+	apiURL, err := url.Parse(config.DiscoveryAPIURL)
+	if err != nil {
+		log.Error(err, nil)
+		os.Exit(1)
+	}
+
+	apiProxy := reverseProxy.Create(apiURL, func(req *http.Request){
+		req.URL.Path = strings.TrimPrefix(req.URL.Path, `/dd/api`)
+	})
+
+	jobApiUrl, err := url.Parse(config.JobAPIURL)
+	if err != nil {
+		log.Error(err, nil)
+		os.Exit(1)
+	}
+
+	jobApiProxy := reverseProxy.Create(jobApiUrl, func(req *http.Request) {
+		log.Debug(`Job api requested`, nil)
+		log.Debug(req.URL.Path, nil)
+		req.URL.Path = strings.TrimPrefix(req.URL.Path, `/dd/api/jobs`)
+	})
+
 	router.HandleFunc("/dd", datasetList.Handler)
 	router.HandleFunc("/dd/", datasetList.Handler)
+	router.Handle("/dd/api/jobs{uri:(|/.*)}", jobApiProxy)
+	router.Handle("/dd/api{uri:(|/.*)}", apiProxy)
 	router.Get("/dd/dataset/{id}", dataset.Handler)
 
 	log.Debug("Starting server", log.Data{
 		"bind_addr":         config.BindAddr,
 		"renderer_url":      config.RendererURL,
 		"discovery_api_url": config.DiscoveryAPIURL,
+		"discovery_job_api_url": config.JobAPIURL,
 	})
 
 	server := &http.Server{

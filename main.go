@@ -74,7 +74,7 @@ func main() {
 	router.HandleFunc("/dd/", datasetList.Handler)
 	router.Handle("/dd/api/jobs{uri:(|/.*)}", jobApiProxy)
 	router.Handle("/dd/api{uri:(|/.*)}", apiProxy)
-	router.Get("/dd/dataset/{id}", dataset.Handler)
+	router.Get("/dd/datasets/{id}", dataset.Handler)
 
 	log.Debug("Starting server", log.Data{
 		"bind_addr":             config.BindAddr,

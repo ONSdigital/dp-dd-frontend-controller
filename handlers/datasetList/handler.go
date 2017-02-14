@@ -23,7 +23,7 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 
 	// Rewrite the URLs in the datasets to point to our own address
 	for _, dataset := range datasets.Items {
-		dataset.URL = config.ExternalURL + "/versions/" + dataset.ID
+		dataset.URL = config.ExternalURL + "/datasets/" + dataset.ID
 	}
 
 	page := datasetList.DatasetList{

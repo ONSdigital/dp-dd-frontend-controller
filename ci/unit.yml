@@ -1,0 +1,16 @@
+---
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: golang
+    tag: 1.7.4
+
+inputs:
+  - name: dp-dd-frontend-controller
+    path: go/src/github.com/ONSdigital/dp-dd-frontend-controller
+
+run:
+  path: go/src/github.com/ONSdigital/dp-dd-frontend-controller/ci/scripts/unit.sh

@@ -25,7 +25,7 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 	log.DebugR(req, `Got response from API`, log.Data{"datasetModel": datasetModel})
 
 	// Rewrite the URLs in the datasets to point to our own address
-	datasetModel.URL = config.ExternalURL + "/versions/" + datasetModel.ID
+	datasetModel.URL = config.ExternalURL + "/datasets/" + datasetModel.ID
 
 	page := dataset.Page{
 		Dataset: datasetModel,

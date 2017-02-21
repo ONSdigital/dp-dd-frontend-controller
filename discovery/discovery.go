@@ -48,7 +48,7 @@ func ListDatasets() (datasets *dd.Datasets, err error) {
 
 // GetDataset retrieves metadata and dimension info for a dataset.
 func GetDataset(id string) (dataset *dd.Dataset, err error) {
-	request, err := http.NewRequest("GET", config.DiscoveryAPIURL+"/versions/"+id, nil)
+	request, err := http.NewRequest("GET", config.DiscoveryAPIURL+"/datasets/"+id, nil)
 	if err != nil {
 		log.Error(err, nil)
 		return nil, err

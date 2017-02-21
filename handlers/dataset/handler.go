@@ -19,13 +19,13 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 	datasetModel, err := discovery.GetDataset(id)
 	if err != nil {
 		log.Error(err, nil)
-		respond(w, http.StatusInternalServerError, []byte(err.Error()))
+		respond(w, http.StatusNotFound, []byte(err.Error()))
 		return
 	}
 	log.DebugR(req, `Got response from API`, log.Data{"datasetModel": datasetModel})
 
 	// Rewrite the URLs in the datasets to point to our own address
-	datasetModel.URL = config.ExternalURL + "/dataset/" + datasetModel.ID
+	datasetModel.URL = config.ExternalURL + "/versions/" + datasetModel.ID
 
 	page := dataset.Page{
 		Dataset: datasetModel,

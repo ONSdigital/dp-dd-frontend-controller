@@ -33,7 +33,7 @@ func TestListDatasets(t *testing.T) {
 
 	Convey("ListDatasets returns accurate dataset metadata", t, func() {
 		statusCode = http.StatusOK
-		json = []byte(`{"items":[{"id":"one","title":"title one","url":"url1", "metadata":{"description":"test description"}}],"total":1}`)
+		json = []byte(`{"items":[{"datasetID":"one","title":"title one","url":"url1", "metadata":{"description":"test description"}}],"total":1}`)
 		datasets, err := ListDatasets()
 		So(err, ShouldBeNil)
 		So(datasets, ShouldNotBeNil)
@@ -82,7 +82,7 @@ func TestGetDataset(t *testing.T) {
 
 	Convey("GetDataset returns accurate dataset information", t, func() {
 		statusCode = http.StatusOK
-		json = []byte(`{"id":"one","title":"title one","url":"url1","metadata":{"description":"test description"},"dimensions":[{"id":"a","name":"A"}]}`)
+		json = []byte(`{"datasetID":"one","title":"title one","url":"url1","metadata":{"description":"test description"},"dimensions":[{"id":"a","name":"A"}]}`)
 		dataset, err := GetDataset("one")
 		So(err, ShouldBeNil)
 		So(dataset, ShouldNotBeNil)

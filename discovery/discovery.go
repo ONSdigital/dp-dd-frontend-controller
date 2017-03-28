@@ -14,7 +14,7 @@ import (
 
 // ListDatasets lists the available datasets by querying the DD API.
 func ListDatasets() (datasets *dd.Datasets, err error) {
-	request, err := http.NewRequest("GET", config.DiscoveryAPIURL+"/datasets", nil)
+	request, err := http.NewRequest("GET", config.DiscoveryAPIURL+"/datasets?size=500", nil)
 	if err != nil {
 		log.Error(err, nil)
 		return
